@@ -6,10 +6,15 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
+    private FlyingFishView gameView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+
+        gameView = new FlyingFishView(this);
+        setContentView(gameView);
 
 
     }
