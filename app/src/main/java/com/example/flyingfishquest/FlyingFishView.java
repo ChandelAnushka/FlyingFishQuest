@@ -118,7 +118,9 @@ public class FlyingFishView extends View {
             if(lifeCounter == 0) {
                 Intent intent = new Intent(getContext(),GameOver.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("Score",score);
                 getContext().startActivity(intent);
+
             }
         }
         redX = redX - redSpeed;
