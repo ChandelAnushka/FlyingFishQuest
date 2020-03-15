@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class FlyingFishView extends View {
@@ -19,6 +20,7 @@ public class FlyingFishView extends View {
     private Bitmap backgroundImage;
     private Paint scorePaint = new Paint();
     private Bitmap life[] = new Bitmap[2];
+    private Boolean touch = false;
 
 
 
@@ -34,9 +36,7 @@ public class FlyingFishView extends View {
         scorePaint.setAntiAlias(true);
         life[0] = BitmapFactory.decodeResource(getResources(),R.drawable.hearts);
         life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.heart_grey);
-
-
-
+        fishY = 550;
     }
 
     @Override
@@ -44,10 +44,12 @@ public class FlyingFishView extends View {
         super.onDraw(canvas);
         canvasWidth = canvas.getWidth();
         canvasHeight = canvas.getHeight();
+        canvas.drawBitmap(backgroundImage, 0 ,0, null);
+
 
         int minFishY = fish[0].getHeight();
-        int maxFishY = canvasHeight - fish[0].getHeight()*3;
-        fishY = fishY * fishSpeed;
+        int maxFishY = canvasHeight - fish[0].getHeight() * 3;
+        fishY = fishY + fishSpeed;
 
         if(fishY < minFishY) {
             fishY = minFishY;
@@ -56,14 +58,33 @@ public class FlyingFishView extends View {
         if(fishY > maxFishY) {
             fishY = maxFishY;
         }
+        fishSpeed = fishSpeed +2;
+
+        if(touch) {
+            canvas.drawBitmap(fish[1] , fishX , fishY ,null);
+            touch = false;
+        }
+        else {
+            canvas.drawBitmap(fish[0] , fishX , fishY ,null);
+
+        }
 
 
-        canvas.drawBitmap(backgroundImage, 0 ,0, null);
 
-        canvas.drawText("score",20,60,scorePaint);
+        canvas.drawText("Score",20,60,scorePaint);
         canvas.drawBitmap(life[0], 580 ,10, null);
         canvas.drawBitmap(life[0], 680 ,10, null);
         canvas.drawBitmap(life[0], 780,10, null);
 
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            touch = true;
+            fishSpeed = - 22;
+        }
+        return true;
     }
 }
