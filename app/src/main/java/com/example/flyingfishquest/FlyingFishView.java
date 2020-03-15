@@ -21,6 +21,11 @@ public class FlyingFishView extends View {
     private Paint scorePaint = new Paint();
     private Bitmap life[] = new Bitmap[2];
     private Boolean touch = false;
+    private int yellowX, yellowY, yellowSpeed = 16;
+    private Paint yellowPaint = new Paint();
+    private int greenX, greenY, greenSpeed = 20;
+    private Paint greenPaint = new Paint();
+    private int score ;
 
 
 
@@ -30,6 +35,13 @@ public class FlyingFishView extends View {
         fish[1] = BitmapFactory.decodeResource(getResources(),R.drawable.fish2);
 
         backgroundImage = BitmapFactory.decodeResource(getResources(),R.drawable.background);
+
+        yellowPaint.setColor(Color.YELLOW);
+        yellowPaint.setAntiAlias(false);
+
+//        greenPaint.setColor(Color.GREEN);
+//        greenPaint.setAntiAlias(false);
+
         scorePaint.setColor(Color.WHITE);
         scorePaint.setTextSize(70);
         scorePaint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -37,6 +49,8 @@ public class FlyingFishView extends View {
         life[0] = BitmapFactory.decodeResource(getResources(),R.drawable.hearts);
         life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.heart_grey);
         fishY = 550;
+        score = 0;
+
     }
 
     @Override
@@ -68,14 +82,30 @@ public class FlyingFishView extends View {
             canvas.drawBitmap(fish[0] , fishX , fishY ,null);
 
         }
+        if(hitBallChecker(yellowX, yellowY)) {
+            score = score + 10;
+            yellowX = - 100;
+        }
+        yellowX = yellowX - yellowSpeed;
+        if(yellowX < 0) {
+            yellowX = canvasWidth + 21;
+            yellowY = (int)Math.floor(Math.random() * (maxFishY - minFishY) + minFishY);
+        }
+        canvas.drawCircle(yellowX, yellowY, 25, yellowPaint);
 
+        canvas.drawText("Score: " + score,20,60,scorePaint);
 
-
-        canvas.drawText("Score",20,60,scorePaint);
         canvas.drawBitmap(life[0], 580 ,10, null);
         canvas.drawBitmap(life[0], 680 ,10, null);
         canvas.drawBitmap(life[0], 780,10, null);
 
+    }
+
+    public boolean hitBallChecker(int x, int y) {
+        if(fishX < x && x < (fishX + fish[0].getWidth()) && fishY < y && y < (fishY + fish[0].getHeight())) {
+            return  true;
+        }
+        return  false;
     }
 
     @Override
