@@ -27,7 +27,7 @@ public class FlyingFishView extends View {
     private Paint greenPaint = new Paint();
     private int redX, redY, redSpeed = 25;
     private Paint redPaint = new Paint();
-    private int score ;
+    private int score, lifeCounter ;
 
 
 
@@ -55,6 +55,7 @@ public class FlyingFishView extends View {
         life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.heart_grey);
         fishY = 550;
         score = 0;
+        lifeCounter = 3;
 
     }
 
@@ -110,7 +111,12 @@ public class FlyingFishView extends View {
         canvas.drawCircle(greenX, greenY, 35, greenPaint);
 
         if(hitBallChecker(redX, redY)) {
+            lifeCounter--;
             redX = - 100;
+
+            if(lifeCounter == 0) {
+//                Toas
+            }
         }
         redX = redX - redSpeed;
         if(redX < 0) {
@@ -119,13 +125,21 @@ public class FlyingFishView extends View {
         }
         canvas.drawCircle(redX, redY, 40, redPaint);
 
-
-
         canvas.drawText("Score: " + score,20,60,scorePaint);
 
-        canvas.drawBitmap(life[0], 580 ,10, null);
-        canvas.drawBitmap(life[0], 680 ,10, null);
-        canvas.drawBitmap(life[0], 780,10, null);
+        for(int i = 0 ; i< 3 ; i++) {
+            int x = (int)(580 + life[0].getWidth() * 1.5 * i);
+            int y = 30;
+
+            if(i<lifeCounter) {
+                canvas.drawBitmap(life[0], x ,y, null);
+            }
+            else {
+                canvas.drawBitmap(life[1], x ,y, null);
+
+            }
+        }
+
 
     }
 
