@@ -1,6 +1,7 @@
 package com.example.flyingfishquest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -115,7 +116,9 @@ public class FlyingFishView extends View {
             redX = - 100;
 
             if(lifeCounter == 0) {
-//                Toas
+                Intent intent = new Intent(getContext(),GameOver.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getContext().startActivity(intent);
             }
         }
         redX = redX - redSpeed;
